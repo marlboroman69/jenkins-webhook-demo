@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Account</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+
+        /* Error state styles */
+        .form-group.error input,
+        .form-group.error select {
+            border-color: #e74c3c;
+        }
+
+        .form-group.success input {
+            border-color: #2ecc71;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .checkbox-group input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-size: 13px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #0066cc;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #0052a3;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .login-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Create Account</h2>
+        <form id="registrationForm" novalidate>
+            
+            <div class="form-group" id="fullnameGroup">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" placeholder="John Doe">
+                <div class="error-message">Full name is required</div>
+            </div>
+
+            <div class="form-group" id="emailGroup">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com">
+                <div class="error-message">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group" id="passwordGroup">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="At least 8 characters">
+                <div class="error-message">Password must be at least 8 characters long</div>
+            </div>
+
+            <div class="form-group" id="confirmPasswordGroup">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password">
+                <div class="error-message">Passwords do not match</div>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender (Optional)</label>
+                <select id="gender" name="gender">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="non-binary">Non-binary</option>
+                    <option value="other">Prefer not to say</option>
+                </select>
+            </div>
+
+            <div class="form-group checkbox-group" id="termsGroup">
+                <input type="checkbox" id="terms" name="terms">
+                <div>
+                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                    <div class="error-message">You must agree to the terms</div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Register</button>
+
+            <div class="login-link">
+                Already have an account? <a href="#">Log in</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registrationForm');
+            const fullname = document.getElementById('fullname');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const terms = document.getElementById('terms');
+
+            // Helper to set error
+            const setError = (element, isError) => {
+                const group = element.closest('.form-group');
+                if (isError) {
+                    group.classList.add('error');
+                    group.classList.remove('success');
+                } else {
+                    group.classList.remove('error');
+                    group.classList.add('success');
+                }
+            };
+
+            // Email validation helper
+            const isValidEmail = (emailVal) => {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(emailVal).toLowerCase());
+            };
+
+            // Individual field validators
+            const validateFullname = () => {
+                const value = fullname.value.trim();
+                const isValid = value !== '';
+                setError(fullname, !isValid);
+                return isValid;
+            };
+
+            const validateEmail = () => {
+                const value = email.value.trim();
+                const isValid = isValidEmail(value);
+                setError(email, !isValid);
+                return isValid;
+            };
+
+            const validatePassword = () => {
+                const value = password.value;
+                const isValid = value.length >= 8;
+                setError(password, !isValid);
+                
+                // Re-validate confirm password if it already has text
+                if (confirmPassword.value.length > 0) {
+                    validateConfirmPassword();
+                }
+                return isValid;
+            };
+
+            const validateConfirmPassword = () => {
+                const isValid = confirmPassword.value !== '' && confirmPassword.value === password.value;
+                setError(confirmPassword, !isValid);
+                return isValid;
+            };
+
+            const validateTerms = () => {
+                const isValid = terms.checked;
+                setError(terms, !isValid);
+                return isValid;
+            };
+
+            // Real-time validation on input/change
+            fullname.addEventListener('input', validateFullname);
+            email.addEventListener('input', validateEmail);
+            password.addEventListener('input', validatePassword);
+            confirmPassword.addEventListener('input', validateConfirmPassword);
+            terms.addEventListener('change', validateTerms);
+
+            // Form submission handler
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Run all validations
+                const isNameValid = validateFullname();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmValid = validateConfirmPassword();
+                const isTermsValid = validateTerms();
+
+                // Submit if all fields are valid
+                if (isNameValid && isEmailValid && isPasswordValid && isConfirmValid && isTermsValid) {
+                    alert('Registration successful!');
+                    form.reset();
+                    document.querySelectorAll('.form-group').forEach(group => {
+                        group.classList.remove('success', 'error');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
